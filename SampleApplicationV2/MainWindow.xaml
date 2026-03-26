@@ -1,0 +1,267 @@
+﻿<Window x:Class="SampleApplicationV2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SampleApplicationV2"
+        mc:Ignorable="d"
+        xmlns:skia="clr-namespace:SkiaSharpControlV2;assembly=SkiaSharpControlV2"
+        Title="MainWindow" Height="700" Width="1000"
+        Icon="/logop1.ico"
+        UseLayoutRounding="True">
+
+    <Grid>
+        
+        <Grid.Resources>
+            <local:BindingProxy x:Key="ProxyElement" Data="{Binding}" />
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Grid.Row="0" Content="Change Columns 1" Command="{Binding ChangeColumns1}"/>
+            <Button Grid.Column="0" Grid.Row="1" Content="Change Columns 2" Command="{Binding ChangeColumns2}"/>
+            <Button Grid.Column="0" Grid.Row="2" Content="New Columns"  Command="{Binding ChangeColumns3}"/>
+            <Button Grid.Column="0" Grid.Row="3" Content="Insert New Items" Command="{Binding InsertNewItems}"/>
+            <Button Grid.Column="0" Grid.Row="4" Content="Update Items 1 Values" Command="{Binding UpdateItemsValues}"/>
+            <Button Grid.Column="0" Grid.Row="5" Content="Copy All Data" Click="CopyAllData_Click"/>
+            <Button Grid.Column="1" Grid.Row="0" Content="Copy Selected Data" Click="CopySelectedData_Click"/>
+            <Button Grid.Column="1" Grid.Row="1"  Command="{Binding UpdateLiveSort}">
+                <Button.Content>
+                    <TextBlock>
+                        <Run Text="Live Sort is"></Run>
+                        <Run Text="{Binding IsLiveSort,UpdateSourceTrigger=PropertyChanged}"></Run>
+                    </TextBlock>
+                </Button.Content>
+            </Button>
+            <Button Grid.Column="1" Grid.Row="2" Command="{Binding EnableTimerBaseSorting}">
+                <Button.Content>
+                    <TextBlock>
+                            <Run Text="("></Run>
+                            <Run Text="{Binding IsTimerBaseSort,UpdateSourceTrigger=PropertyChanged}"></Run>
+                            <Run Text=") Timer Base Sorting for 5 sec"></Run>
+                    </TextBlock>
+                </Button.Content>
+            </Button>
+            <Button Grid.Column="1" Grid.Row="3" Content="Remove Selected Items" Command="{Binding RemoveSelectedItems}"/>
+            <Button Grid.Column="1" Grid.Row="4" Content="Move Row Up" Click="MoveRowUp_Click"/>
+            <Button Grid.Column="1" Grid.Row="5" Content="Move Row Down" Click="MoveRowDown_Click"/>
+            <Button Grid.Column="2" Grid.Row="0" Content="Insert Blank Row" Click="InsertBlankRow_Click"/>
+            <Button Grid.Column="2" Grid.Row="1" Content="[Name]"/>
+            <Button Grid.Column="2" Grid.Row="2" Content="[Name]"/>
+            <Button Grid.Column="2" Grid.Row="3" Content="[Name]"/>
+            <Button Grid.Column="2" Grid.Row="4" Content="[Name]"/>
+            <Button Grid.Column="2" Grid.Row="5" Content="[Name]"/>
+            <Button Grid.Column="3" Grid.Row="0" Content="[Name]"/>
+            <Button Grid.Column="3" Grid.Row="1" Content="[Name]"/>
+            <Button Grid.Column="3" Grid.Row="2" Content="[Name]"/>
+            <Button Grid.Column="3" Grid.Row="3" Content="[Name]"/>
+            <Button Grid.Column="3" Grid.Row="4" Content="[Name]"/>
+            <Button Grid.Column="3" Grid.Row="5" Content="[Name]"/>
+            <Button Grid.Column="4" Grid.Row="0" Content="[Name]"/>
+            <Button Grid.Column="4" Grid.Row="1" Content="[Name]"/>
+            <Button Grid.Column="4" Grid.Row="2" Content="[Name]"/>
+            <Button Grid.Column="4" Grid.Row="3" Content="[Name]"/>
+            <Button Grid.Column="4" Grid.Row="4" Content="[Name]"/>
+            <Button Grid.Column="4" Grid.Row="5" Content="[Name]"/>
+        </Grid>
+        <FrameworkElement x:Name="FrameWorkElementProxy"  DataContext="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+        <Grid Grid.Row="1">
+            
+            <skia:SkiaGridViewV2 ItemsSource="{Binding Items}" 
+                                 ShowGridLines="True"
+                                 GridLinesColor="#000000"
+                                 RowBackground="#ffffff"
+                                 AlternatingRowBackground="#F0F0F0"
+                                 ForegroundColor="#000000"
+                                 CanUserReorderColumns="True"
+                                 CanUserSelectRows="True"
+                                 CanUserResizeColumns="True"
+                                 CanUserSortColumns="True"
+                                 RetainSelectionOnLFocusLost="False"
+                                 SKFontSize="19"
+                                 SKFontFamily="Agency FB"
+                                 SKFontStyle="Normal"
+                                 IsDeferredScrollingEnabled="True"
+                                 HorizontalScrollBarVisible="Auto"
+                                 VerticalScrollBarVisible="Auto"
+                                 SelectedItems="{Binding SelectedItems,UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                 IsLiveSorting="{Binding IsLiveSort,UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"
+                                 SortEvery="{Binding SortEvery,UpdateSourceTrigger=PropertyChanged}"
+                                 Name="skiaGrid">
+                 <skia:SkiaGridViewV2.GroupSettings  >
+                    <skia:SKGroupDefinition GroupBy="Name"  RowBackground="#CECECE" ForegroundColor="#ffffff"  >
+                        <!--<skia:SKGroupDefinition.HeaderFields>
+                            <skia:SKGroupField BindingPath="Price"  Aggregation="Sum" TargetColumns="Price" >
+                                <skia:SKGroupField.GroupCellTemplate>
+                                    <skia:SKGroupCellTemplate>
+                                        <skia:SKGroupCellTemplate.Setters>
+                                            <skia:SKSetter Property="Foreground" Value="#ffffff"></skia:SKSetter>
+                                            <skia:SKSetter Property="Background" Value="#181818"></skia:SKSetter>
+                                            <skia:SKSetter Property="BorderColor" Value="#21A366"></skia:SKSetter>
+                                        </skia:SKGroupCellTemplate.Setters>
+                                        <skia:SkGroupDataTrigger BindingPath="Price" Aggregation="Sum" Operator="GreaterThan" Value="10" >
+                                            <skia:SkGroupDataTrigger.Setters>
+                                                <skia:SKSetter Property="Background" Value="#CECECE"></skia:SKSetter>
+                                                <skia:SKSetter Property="Foreground" Value="#1ED760"></skia:SKSetter>
+                                            </skia:SkGroupDataTrigger.Setters>
+                                        </skia:SkGroupDataTrigger>
+                                        --><!--<skia:SKGroupMultiTrigger>
+                                            <skia:SKGroupMultiTrigger.Conditions>
+                                                <skia:SKGroupCondition Binding="{Binding Data.IsLiveSort, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Operator="Equals" Value="true"></skia:SKGroupCondition>
+                                                <skia:SKGroupCondition BindingPath="Price" Aggregation="Sum" Operator="GreaterThan" Value="0"></skia:SKGroupCondition>
+                                            </skia:SKGroupMultiTrigger.Conditions>
+                                            <skia:SKGroupMultiTrigger.Setters>
+                                                <skia:SKSetter Property="Foreground" Value="#1ED760"></skia:SKSetter>
+                                                <skia:SKSetter Property="Background" Value="#ffffff"></skia:SKSetter>
+                                            </skia:SKGroupMultiTrigger.Setters>
+                                        </skia:SKGroupMultiTrigger>--><!--
+                                    </skia:SKGroupCellTemplate>
+                                </skia:SKGroupField.GroupCellTemplate>
+                            </skia:SKGroupField>
+                            <skia:SKGroupField BindingPath="Discount"  Aggregation="Sum" TargetColumns="Discount" />
+                            <skia:SKGroupField BindingPath="Quantity"  Aggregation="Sum"  TargetColumns="Quantity" />
+                        </skia:SKGroupDefinition.HeaderFields>-->
+                        <skia:SKGroupDefinition.ToggleSymbol>
+                            <skia:SKGroupToggleSymbol Expand="-" Collapse="+" TargetColumns="Id" ShowGroupDetail="True" >
+                            </skia:SKGroupToggleSymbol>
+                        </skia:SKGroupDefinition.ToggleSymbol>
+                    </skia:SKGroupDefinition>
+                </skia:SkiaGridViewV2.GroupSettings>
+
+                <skia:SkiaGridViewV2.RowTemplate>
+                    <skia:SKRowTemplate>
+                        <!--    <skia:SKRowTemplate.Setters>
+                            <skia:SKSetter Property="Foreground" Value="#ffffff" />
+                            <skia:SKSetter Property="Background" Value="#EAECEE" />
+                        </skia:SKRowTemplate.Setters>
+                        <skia:SKDataTrigger  BindingPath="IsActive" Operator="Equals" Value="True">
+                            <skia:SKDataTrigger.Setters>
+                                <skia:SKSetter Property="Background" Value="#CCD5F0" ></skia:SKSetter>
+                                <skia:SKSetter Property="Foreground" Value="#000000" ></skia:SKSetter>
+                                <skia:SKSetter Property="BorderColor" Value="#000000" ></skia:SKSetter>
+                            </skia:SKDataTrigger.Setters>
+                        </skia:SKDataTrigger>-->
+                        <!--<skia:SKMultiTrigger >
+                            <skia:SKMultiTrigger.Conditions>
+                                <skia:SKCondition Binding="{Binding Data.IsTimerBaseSort,Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged}" Operator="Equals" Value="True" />
+                                <skia:SKCondition BindingPath="IsActive" Operator="Equals" Value="True" />
+                                <skia:SKCondition BindingPath="Price" Operator="LessThanOrEqual" Value="500" />
+                            </skia:SKMultiTrigger.Conditions>
+                            <skia:SKMultiTrigger.Setters>
+                                <skia:SKSetter Property="Background" Value="#CCD5F0" ></skia:SKSetter>
+                                <skia:SKSetter Property="Foreground" Value="#000000" ></skia:SKSetter>
+                                <skia:SKSetter Property="BorderColor" Value="#000000" ></skia:SKSetter>
+                            </skia:SKMultiTrigger.Setters>
+                        </skia:SKMultiTrigger>-->
+                    </skia:SKRowTemplate>
+                </skia:SkiaGridViewV2.RowTemplate>
+                <!--<skia:SkiaGridViewV2.CellTemplate>
+                    <skia:SKCellTemplate>
+                        <skia:SKCellTemplate.Setters>
+                            <skia:SKSetter Property="Foreground" Value="#000000" />
+                            <skia:SKSetter Property="Background" Value="#DE5C99" />
+                            <skia:SKSetter Property="BorderColor" Value="#ffffff" />
+                        </skia:SKCellTemplate.Setters>
+                        <skia:SKDataTrigger  BindingPath="IsActive" Operator="Equals" Value="True">
+                            <skia:SKDataTrigger.Setters>
+                                <skia:SKSetter Property="Background" Value="#2166A3" ></skia:SKSetter>
+                                <skia:SKSetter Property="Foreground" Value="#ffffff" ></skia:SKSetter>
+                            </skia:SKDataTrigger.Setters>
+                        </skia:SKDataTrigger>
+                    </skia:SKCellTemplate>
+                </skia:SkiaGridViewV2.CellTemplate>-->
+                <skia:SkiaGridViewV2.Columns>
+                    <skia:SKGridViewColumn Name="GroupColumn" Header="Description1" GridViewColumnSort="{Binding Data.Columns.GroupColumn.SortDirection, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" DisplayIndex="{Binding Data.Columns.GroupColumn.DisplayIndex, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="{Binding Data.Columns.GroupColumn.Width, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsVisible="True" BindingPath="Name" ContentAlignment="Center"  CanUserSort="False" />
+                    <skia:SKGridViewColumn Name="Name" GridViewColumnSort="{Binding Data.Columns.Name.SortDirection, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" DisplayIndex="{Binding Data.Columns.Name.DisplayIndex, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="{Binding Data.Columns.Name.Width, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsVisible="{Binding Data.Columns.Name.IsVisible, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Header="Name" BindingPath="Name"  CanUserSort="True" >
+                        <skia:SKGridViewColumn.CellTemplate>
+                            <skia:SKCellTemplate >
+                                <skia:SKCellTemplate.SkButton>
+                                    <skia:SkButton Text="+" ForegroundColor="#ffffff" BackgroundColor="#000000" Width="{Binding Data.Columns.Name.Width, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" OnClicked="{Binding Data.OnButtonClick, Source={StaticResource ProxyElement}}" Name="CancelButton" ></skia:SkButton>
+                                </skia:SKCellTemplate.SkButton>
+                                <!--<skia:SKCellTemplate.SkButtons >
+                                    <skia:SkButton Text="-" ForegroundColor="#ffffff" BackgroundColor="#000000" MarginLeft="5" Width="20"   OnClicked="{Binding Data.OnButtonClick, Source={StaticResource ProxyElement}}" Name="CancelButton1" ></skia:SkButton>
+                                    <skia:SkButton Text="*" ImageSource="/P1_logo_low.jpg" ForegroundColor="#ffffff" BackgroundColor="#000000"   MarginLeft="5"   OnClicked="{Binding Data.OnButtonClick, Source={StaticResource ProxyElement}}" Name="CancelButton2" ></skia:SkButton>
+                                    <skia:SkButton Text="→"  ForegroundColor="#ffffff" BackgroundColor="#000000"   MarginLeft="5"  Width="20"  OnClicked="{Binding Data.OnButtonClick, Source={StaticResource ProxyElement}}" Name="abc" ></skia:SkButton>
+                                </skia:SKCellTemplate.SkButtons>-->
+                                
+                            </skia:SKCellTemplate>
+                        </skia:SKGridViewColumn.CellTemplate>
+                    </skia:SKGridViewColumn>
+                    <skia:SKGridViewColumn Name="Id" GridViewColumnSort="{Binding Data.Columns.Id.SortDirection, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" DisplayIndex="{Binding Data.Columns.Id.DisplayIndex, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}"  Width="{Binding Data.Columns.Id.Width, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsVisible="{Binding Data.Columns.Id.IsVisible, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Header="ID" BindingPath="Id"  ContentAlignment="Left" >
+                        
+                    </skia:SKGridViewColumn>
+                    <skia:SKGridViewColumn GridViewColumnSort="{Binding Data.Columns.Price.SortDirection, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" DisplayIndex="{Binding Data.Columns.Price.DisplayIndex, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Name="Price" Width="{Binding Data.Columns.Price.Width, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsVisible="{Binding Data.Columns.Price.IsVisible, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" BackColor="{Binding Data.Columns.Price.BackColor, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Header="Price" BindingPath="Price" ContentAlignment="Right" Format="N3" ShowBracketOnNegative="True" FormatWithAcronym="True"  >
+                        <skia:SKGridViewColumn.CellTemplate>
+                            <skia:SKCellTemplate >
+                                <!--<skia:SKCellTemplate.Setters>
+                                    <skia:SKSetter Property="Foreground" Value="#000000" />
+                                    <skia:SKSetter Property="Background" Value="#DE5C99" />
+                                    <skia:SKSetter Property="BorderColor" Value="#ffffff" />
+                                </skia:SKCellTemplate.Setters>-->
+
+                                                        <!--<skia:SKDataTrigger  BindingPath="Price" Operator="Equals" Value="1000"  >
+                                    <skia:SKDataTrigger.Setters>
+                                        <skia:SKSetter Property="Background" Value="#00FF00" ></skia:SKSetter>
+                                        <skia:SKSetter Property="Foreground" Value="#ffffff" ></skia:SKSetter>
+                                    </skia:SKDataTrigger.Setters>
+                                </skia:SKDataTrigger>-->
+                                <skia:SKDataTrigger  BindingPath="Price" Operator="GreaterThan" Value="0" IsTimerBased="True" Duration="3">
+                                    <skia:SKDataTrigger.Setters>
+                                        <skia:SKSetter Property="Background" Value="#1ED760" ></skia:SKSetter>
+                                        <skia:SKSetter Property="BorderColor" Value="#ffffff" ></skia:SKSetter>
+                                    </skia:SKDataTrigger.Setters>
+                                </skia:SKDataTrigger>
+                                <skia:SKDataTrigger  BindingPath="Price" Operator="LessThan" Value="0" IsTimerBased="True" Duration="3">
+                                    <skia:SKDataTrigger.Setters>
+                                        <skia:SKSetter Property="Background" Value="#FF0000" ></skia:SKSetter>
+                                        <skia:SKSetter Property="BorderColor" Value="#000000" ></skia:SKSetter>
+                                    </skia:SKDataTrigger.Setters>
+                                </skia:SKDataTrigger>
+                            </skia:SKCellTemplate>
+                        </skia:SKGridViewColumn.CellTemplate>
+                    </skia:SKGridViewColumn>
+                    <skia:SKGridViewColumn GridViewColumnSort="{Binding Data.Columns.IsActive.SortDirection, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" DisplayIndex="{Binding Data.Columns.IsActive.DisplayIndex, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="{Binding Data.Columns.IsActive.Width, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsVisible="{Binding Data.Columns.IsActive.IsVisible, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Header="Is Active" BindingPath="IsActive"  />
+                    <skia:SKGridViewColumn GridViewColumnSort="{Binding Data.Columns.CreatedAt.SortDirection, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" DisplayIndex="{Binding Data.Columns.CreatedAt.DisplayIndex, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="{Binding Data.Columns.CreatedAt.Width, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsVisible="{Binding Data.Columns.CreatedAt.IsVisible, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Header="Created At" BindingPath="CreatedAt"  Format="dd/MM/yyyy" ContentAlignment="Center" />
+                    <skia:SKGridViewColumn GridViewColumnSort="{Binding Data.Columns.Description.SortDirection, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" DisplayIndex="{Binding Data.Columns.Description.DisplayIndex, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Name="Description" Width="{Binding Data.Columns.Description.Width, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsVisible="{Binding Data.Columns.Description.IsVisible, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Header="Description" BindingPath="Description"  />
+                    <skia:SKGridViewColumn GridViewColumnSort="{Binding Data.Columns.Quantity.SortDirection, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" DisplayIndex="{Binding Data.Columns.Quantity.DisplayIndex, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Name="Quantity" Width="{Binding Data.Columns.Quantity.Width, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsVisible="{Binding Data.Columns.Quantity.IsVisible, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Header="Quantity" BindingPath="Quantity" Format="F5" ContentAlignment="Right" FormatWithAcronym="True" />
+                    <skia:SKGridViewColumn GridViewColumnSort="{Binding Data.Columns.Discount.SortDirection, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" DisplayIndex="{Binding Data.Columns.Discount.DisplayIndex, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Name="Discount" Width="{Binding Data.Columns.Discount.Width, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsVisible="{Binding Data.Columns.Discount.IsVisible, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Header="Discount" BindingPath="Discount" Format="N3"  />
+                    <skia:SKGridViewColumn GridViewColumnSort="{Binding Data.Columns.IsDeleted.SortDirection, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" DisplayIndex="{Binding Data.Columns.IsDeleted.DisplayIndex, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="{Binding Data.Columns.IsDeleted.Width, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsVisible="{Binding Data.Columns.IsDeleted.IsVisible, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Header="Is Deleted" BindingPath="IsDeleted"  />
+                    <skia:SKGridViewColumn GridViewColumnSort="{Binding Data.Columns.UpdatedAt.SortDirection, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" DisplayIndex="{Binding Data.Columns.UpdatedAt.DisplayIndex, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="{Binding Data.Columns.UpdatedAt.Width, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsVisible="{Binding Data.Columns.UpdatedAt.IsVisible, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Header="Updated At" BindingPath="UpdatedAt"  Format="hh:mm:ss tt" />
+                    <skia:SKGridViewColumn GridViewColumnSort="{Binding Data.Columns.Category.SortDirection, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" DisplayIndex="{Binding Data.Columns.Category.DisplayIndex, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="{Binding Data.Columns.Category.Width, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsVisible="{Binding Data.Columns.Category.IsVisible, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Header="Category" BindingPath="Category"  />
+                    <skia:SKGridViewColumn GridViewColumnSort="{Binding Data.Columns.Rating.SortDirection, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" DisplayIndex="{Binding Data.Columns.Rating.DisplayIndex, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="{Binding Data.Columns.Rating.Width, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsVisible="{Binding Data.Columns.Rating.IsVisible, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Header="Rating" BindingPath="Rating"  />
+                    <skia:SKGridViewColumn GridViewColumnSort="{Binding Data.Columns.Weight.SortDirection, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" DisplayIndex="{Binding Data.Columns.Weight.DisplayIndex, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="{Binding Data.Columns.Weight.Width, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsVisible="{Binding Data.Columns.Weight.IsVisible, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Header="Weight" BindingPath="Weight"  />
+                    <skia:SKGridViewColumn GridViewColumnSort="{Binding Data.Columns.InStock.SortDirection, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" DisplayIndex="{Binding Data.Columns.InStock.DisplayIndex, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="{Binding Data.Columns.InStock.Width, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsVisible="{Binding Data.Columns.InStock.IsVisible, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Header="In Stock" BindingPath="InStock"  />
+                    <skia:SKGridViewColumn GridViewColumnSort="{Binding Data.Columns.ExpiryDate.SortDirection, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" DisplayIndex="{Binding Data.Columns.ExpiryDate.DisplayIndex, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="{Binding Data.Columns.ExpiryDate.Width, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsVisible="{Binding Data.Columns.ExpiryDate.IsVisible, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Header="Expiry Date" BindingPath="ExpiryDate" />
+                    <skia:SKGridViewColumn GridViewColumnSort="{Binding Data.Columns.SupplierName.SortDirection, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" DisplayIndex="{Binding Data.Columns.SupplierName.DisplayIndex, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="{Binding Data.Columns.SupplierName.Width, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsVisible="{Binding Data.Columns.SupplierName.IsVisible, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Header="Supplier" BindingPath="SupplierName"  />
+                    <skia:SKGridViewColumn GridViewColumnSort="{Binding Data.Columns.ReorderLevel.SortDirection, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" DisplayIndex="{Binding Data.Columns.ReorderLevel.DisplayIndex, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="{Binding Data.Columns.ReorderLevel.Width, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsVisible="{Binding Data.Columns.ReorderLevel.IsVisible, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Header="Reorder Level" BindingPath="ReorderLevel" />
+                    <skia:SKGridViewColumn GridViewColumnSort="{Binding Data.Columns.Height.SortDirection, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" DisplayIndex="{Binding Data.Columns.Height.DisplayIndex, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="{Binding Data.Columns.Height.Width, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsVisible="{Binding Data.Columns.Height.IsVisible, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Header="Height" BindingPath="Height"  />
+                    <skia:SKGridViewColumn GridViewColumnSort="{Binding Data.Columns.IsFeatured.SortDirection, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" DisplayIndex="{Binding Data.Columns.IsFeatured.DisplayIndex, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="{Binding Data.Columns.IsFeatured.Width, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsVisible="{Binding Data.Columns.IsFeatured.IsVisible, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Header="Is Featured" BindingPath="IsFeatured" />
+                    <skia:SKGridViewColumn GridViewColumnSort="{Binding Data.Columns.LastOrdered.SortDirection, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" DisplayIndex="{Binding Data.Columns.LastOrdered.DisplayIndex, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="{Binding Data.Columns.LastOrdered.Width, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsVisible="{Binding Data.Columns.LastOrdered.IsVisible, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Header="Last Ordered" BindingPath="LastOrdered"  />
+                    <skia:SKGridViewColumn GridViewColumnSort="{Binding Data.Columns.Barcode.SortDirection, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" DisplayIndex="{Binding Data.Columns.Barcode.DisplayIndex, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="{Binding Data.Columns.Barcode.Width, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsVisible="{Binding Data.Columns.Barcode.IsVisible, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Header="Barcode" BindingPath="Barcode"  />
+                    <skia:SKGridViewColumn GridViewColumnSort="{Binding Data.Columns.Views.SortDirection, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" DisplayIndex="{Binding Data.Columns.Views.DisplayIndex, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="{Binding Data.Columns.Views.Width, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsVisible="{Binding Data.Columns.Views.IsVisible, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Header="Views" BindingPath="Views"  />
+                    <skia:SKGridViewColumn GridViewColumnSort="{Binding Data.Columns.Width.SortDirection, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" DisplayIndex="{Binding Data.Columns.Width.DisplayIndex, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="{Binding Data.Columns.Width.Width, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsVisible="{Binding Data.Columns.Width.IsVisible, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Header="Width" BindingPath="Width"  />
+                    <skia:SKGridViewColumn GridViewColumnSort="{Binding Data.Columns.IsTrending.SortDirection, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" DisplayIndex="{Binding Data.Columns.IsTrending.DisplayIndex, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="{Binding Data.Columns.IsTrending.Width, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsVisible="{Binding Data.Columns.IsTrending.IsVisible, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Header="Is Trending" BindingPath="IsTrending"  />
+                    <skia:SKGridViewColumn GridViewColumnSort="{Binding Data.Columns.ReleaseDate.SortDirection, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" DisplayIndex="{Binding Data.Columns.ReleaseDate.DisplayIndex, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Width="{Binding Data.Columns.ReleaseDate.Width, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" IsVisible="{Binding Data.Columns.ReleaseDate.IsVisible, Source={StaticResource ProxyElement},UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" Header="Release Date" BindingPath="ReleaseDate"  />
+
+                </skia:SkiaGridViewV2.Columns>
+            </skia:SkiaGridViewV2>
+        </Grid>
+    </Grid>
+</Window>
